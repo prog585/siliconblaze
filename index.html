@@ -1,749 +1,1348 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="img/sb.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SiliconBlaze | AI Automation & Custom Development</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.16.4/framer-motion.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            200: '#c7d2fe',
-                            300: '#a5b4fc',
-                            400: '#818cf8',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            800: '#3730a3',
-                            900: '#312e81'
-                        },
-                        secondary: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            200: '#e2e8f0',
-                            300: '#cbd5e1',
-                            400: '#94a3b8',
-                            500: '#64748b',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '#1e293b',
-                            900: '#0f172a',
-                            950: '#020617'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: '#eef2ff',
+                100: '#e0e7ff',
+                200: '#c7d2fe',
+                300: '#a5b4fc',
+                400: '#818cf8',
+                500: '#6366f1',
+                600: '#4f46e5',
+                700: '#4338ca',
+                800: '#3730a3',
+                900: '#312e81',
+              },
+              secondary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+                950: '#020617',
+              },
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      };
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        html {
-            scroll-behavior: smooth;
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      .fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
-        
-        .fade-in {
-            opacity: 0;
-            animation: fadeIn 0.8s forwards;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+      }
+
+      .stagger-item {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .slide-in-right {
+        opacity: 0;
+        transform: translateX(50px);
+        animation: slideInRight 0.8s forwards;
+        animation-delay: calc(var(--order) * 0.2s);
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
         }
-        
-        .stagger-item {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+        to {
+          opacity: 1;
+          transform: translateX(0);
         }
-        
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(50px);
-            animation: slideInRight 0.8s forwards;
-            animation-delay: calc(var(--order) * 0.2s);
+      }
+
+      .gradient-text {
+        background: linear-gradient(90deg, #4338ca, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .tech-pill {
+        opacity: 0;
+        animation: fadeInPill 0.5s forwards;
+        animation-delay: calc(var(--order) * 0.1s);
+      }
+
+      @keyframes fadeInPill {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
-        
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        .gradient-text {
-            background: linear-gradient(90deg, #4338ca, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .tech-pill {
-            opacity: 0;
-            animation: fadeInPill 0.5s forwards;
-            animation-delay: calc(var(--order) * 0.1s);
-        }
-        
-        @keyframes fadeInPill {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .hover-scale {
-            transition: transform 0.3s ease;
-        }
-        
-        .hover-scale:hover {
-            transform: scale(1.03);
-        }
-        
-        .glow-on-hover:hover {
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
-        }
+      }
+
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+
+      .hover-scale:hover {
+        transform: scale(1.03);
+      }
+
+      .glow-on-hover:hover {
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+      }
     </style>
-</head>
-<body class="bg-white text-secondary-800 font-sans">
+  </head>
+  <body class="bg-white text-secondary-800 font-sans">
     <!-- Navbar -->
     <nav class="fixed w-full bg-white bg-opacity-95 z-50 shadow-sm py-4">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold text-primary-700">Silicon<span class="text-primary-900">Blaze</span></span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-secondary-600 hover:text-primary-700 font-medium transition-colors">Home</a>
-                    <a href="#services" class="text-secondary-600 hover:text-primary-700 font-medium transition-colors">Services</a>
-                    <a href="#expertise" class="text-secondary-600 hover:text-primary-700 font-medium transition-colors">Expertise</a>
-                    <a href="#approach" class="text-secondary-600 hover:text-primary-700 font-medium transition-colors">Approach</a>
-                    <a href="#contact" class="text-secondary-600 hover:text-primary-700 font-medium transition-colors">Contact</a>
-                </div>
-                <div class="md:hidden">
-                    <button class="text-secondary-700 hover:text-primary-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="hidden md:block">
-                    <a href="#contact" class="bg-gradient-to-r from-primary-600 to-primary-800 text-white px-5 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300">Get Started</a>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <span class="text-2xl font-bold text-primary-700"
+              >Silicon<span class="text-primary-900">Blaze</span></span
+            >
+          </div>
+          <div class="hidden md:flex space-x-8">
+            <a
+              href="#home"
+              class="text-secondary-600 hover:text-primary-700 font-medium transition-colors"
+              >Home</a
+            >
+            <a
+              href="#services"
+              class="text-secondary-600 hover:text-primary-700 font-medium transition-colors"
+              >Services</a
+            >
+            <a
+              href="#expertise"
+              class="text-secondary-600 hover:text-primary-700 font-medium transition-colors"
+              >Expertise</a
+            >
+            <a
+              href="#approach"
+              class="text-secondary-600 hover:text-primary-700 font-medium transition-colors"
+              >Approach</a
+            >
+            <a
+              href="#contact"
+              class="text-secondary-600 hover:text-primary-700 font-medium transition-colors"
+              >Contact</a
+            >
+          </div>
+          <div class="md:hidden">
+            <button class="text-secondary-700 hover:text-primary-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="hidden md:block">
+            <a
+              href="#contact"
+              class="bg-gradient-to-r from-primary-600 to-primary-800 text-white px-5 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
+              >Get Started</a
+            >
+          </div>
         </div>
+      </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="pt-32 pb-20 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="fade-in">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                        Transforming Businesses with <span class="gradient-text">AI Automation</span>
-                    </h1>
-                    <p class="mt-6 text-lg text-secondary-600 leading-relaxed">
-                        Custom AI solutions and intelligent software development to optimize workflows, reduce costs, and drive innovation for your business.
-                    </p>
-                    <div class="mt-8 flex flex-col sm:flex-row gap-4">
-                        <a href="#contact" class="bg-gradient-to-r from-primary-600 to-primary-800 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 text-center">
-                            Schedule Consultation
-                        </a>
-                        <a href="#services" class="bg-white border-2 border-primary-600 text-primary-700 px-8 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-all duration-300 text-center">
-                            Explore Services
-                        </a>
-                    </div>
-                    <div class="mt-10">
-                        <p class="text-sm font-medium text-secondary-500 mb-3">TECH EXPERTISE:</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm" style="--order: 1">OpenAI</span>
-                            <span class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm" style="--order: 2">React</span>
-                            <span class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm" style="--order: 3">React Native</span>
-                            <span class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm" style="--order: 4">C#/.NET</span>
-                            <span class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm" style="--order: 5">Node.js</span>
-                            <span class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm" style="--order: 6">AWS</span>
-                            <span class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm" style="--order: 7">LangChain</span>
-                            <span class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm" style="--order: 8">TypeScript</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative h-full flex justify-center items-center fade-in" style="animation-delay: 0.4s">
-                    <img src="/api/placeholder/600/500" alt="AI Automation Illustration" class="rounded-xl shadow-2xl z-10 relative" />
-                    <div class="absolute -right-8 -bottom-8 w-72 h-72 bg-primary-100 rounded-full opacity-70 z-0"></div>
-                    <div class="absolute -left-12 -top-12 w-48 h-48 bg-primary-200 rounded-full opacity-60 z-0"></div>
-                </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="fade-in">
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+            >
+              Transforming Businesses with
+              <span class="gradient-text">AI Automation</span>
+            </h1>
+            <p class="mt-6 text-lg text-secondary-600 leading-relaxed">
+              Custom AI solutions and intelligent software development to
+              optimize workflows, reduce costs, and drive innovation for your
+              business.
+            </p>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4">
+              <a
+                href="#contact"
+                class="bg-gradient-to-r from-primary-600 to-primary-800 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 text-center"
+              >
+                Schedule Consultation
+              </a>
+              <a
+                href="#services"
+                class="bg-white border-2 border-primary-600 text-primary-700 px-8 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-all duration-300 text-center"
+              >
+                Explore Services
+              </a>
             </div>
+            <div class="mt-10">
+              <p class="text-sm font-medium text-secondary-500 mb-3">
+                TECH EXPERTISE:
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                  style="--order: 1"
+                  >OpenAI</span
+                >
+                <span
+                  class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                  style="--order: 2"
+                  >React</span
+                >
+                <span
+                  class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                  style="--order: 3"
+                  >React Native</span
+                >
+                <span
+                  class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                  style="--order: 4"
+                  >C#/.NET</span
+                >
+                <span
+                  class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                  style="--order: 5"
+                  >Node.js</span
+                >
+                <span
+                  class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                  style="--order: 6"
+                  >AWS</span
+                >
+                <span
+                  class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                  style="--order: 7"
+                  >LangChain</span
+                >
+                <span
+                  class="tech-pill bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                  style="--order: 8"
+                  >TypeScript</span
+                >
+              </div>
+            </div>
+          </div>
+          <div
+          class="relative h-full flex justify-center items-center fade-in"
+          style="animation-delay: 0.4s"
+        >
+          <!-- Move image to background by reducing z-index -->
+          <img
+            src="img/22896753_6670985.jpg"
+            alt="AI Automation Illustration"
+            class="rounded-xl shadow-xl relative z-0 max-w-full h-auto"
+            style="width: 90%; object-fit: contain;"
+          />
+          
+          <!-- Bring decorative elements to foreground with higher z-index -->
+          <div
+            class="absolute -right-8 -bottom-8 w-72 h-72 bg-primary-100 rounded-full opacity-70 z-10"
+          ></div>
+          <div
+            class="absolute -left-12 -top-12 w-48 h-48 bg-primary-200 rounded-full opacity-60 z-10"
+          ></div>
+          
+          <!-- Add an optional third bubble for more visual interest -->
+          <div
+            class="absolute right-20 top-10 w-36 h-36 bg-primary-50 rounded-full opacity-80 z-20"
+          ></div>
         </div>
+        </div>
+        </div>
+      </div>
     </section>
 
     <!-- Services Section -->
     <section id="services" class="py-20 bg-secondary-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold">AI-Powered Services</h2>
-                <p class="mt-4 text-lg text-secondary-600 max-w-3xl mx-auto">
-                    End-to-end custom solutions designed to transform your business operations with the power of artificial intelligence.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl shadow-lg p-8 hover-scale glow-on-hover stagger-item">
-                    <div class="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">AI Workflow Automation</h3>
-                    <p class="text-secondary-600 mb-4">
-                        Streamline operations by automating repetitive tasks and workflows with custom AI solutions.
-                    </p>
-                    <ul class="space-y-2 text-secondary-700">
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            Document processing & analysis
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            Data extraction & transformation
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            Custom workflow optimization
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-8 hover-scale glow-on-hover stagger-item">
-                    <div class="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">AI Agents & Chatbots</h3>
-                    <p class="text-secondary-600 mb-4">
-                        Intelligent conversational agents to enhance customer service and internal operations.
-                    </p>
-                    <ul class="space-y-2 text-secondary-700">
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            Knowledge base assistants
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            Multi-channel support bots
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            LLM-powered assistants
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-8 hover-scale glow-on-hover stagger-item">
-                    <div class="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Cloud & Mobile Development</h3>
-                    <p class="text-secondary-600 mb-4">
-                        Cross-platform applications and cloud solutions with AI integration.
-                    </p>
-                    <ul class="space-y-2 text-secondary-700">
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            React & React Native apps
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            AWS cloud solutions
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                            .NET backend services
-                        </li>
-                    </ul>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+          <h2 class="text-3xl md:text-4xl font-bold">AI-Powered Services</h2>
+          <p class="mt-4 text-lg text-secondary-600 max-w-3xl mx-auto">
+            End-to-end custom solutions designed to transform your business
+            operations with the power of artificial intelligence.
+          </p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="bg-white rounded-xl shadow-lg p-8 hover-scale glow-on-hover stagger-item"
+          >
+            <div
+              class="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 text-primary-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">AI Workflow Automation</h3>
+            <p class="text-secondary-600 mb-4">
+              Streamline operations by automating repetitive tasks and workflows
+              with custom AI solutions.
+            </p>
+            <ul class="space-y-2 text-secondary-700">
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Document processing & analysis
+              </li>
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Data extraction & transformation
+              </li>
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Custom workflow optimization
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-8 hover-scale glow-on-hover stagger-item"
+          >
+            <div
+              class="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 text-primary-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">AI Agents & Chatbots</h3>
+            <p class="text-secondary-600 mb-4">
+              Intelligent conversational agents to enhance customer service and
+              internal operations.
+            </p>
+            <ul class="space-y-2 text-secondary-700">
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Knowledge base assistants
+              </li>
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Multi-channel support bots
+              </li>
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                LLM-powered assistants
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-8 hover-scale glow-on-hover stagger-item"
+          >
+            <div
+              class="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 text-primary-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Cloud & Mobile Development</h3>
+            <p class="text-secondary-600 mb-4">
+              Cross-platform applications and cloud solutions with AI
+              integration.
+            </p>
+            <ul class="space-y-2 text-secondary-700">
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                React & React Native apps
+              </li>
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                AWS cloud solutions
+              </li>
+              <li class="flex items-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-primary-600 mr-2 mt-0.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                .NET backend services
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Expertise Section -->
     <section id="expertise" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold">Technical Expertise</h2>
-                <p class="mt-4 text-lg text-secondary-600 max-w-3xl mx-auto">
-                    Specialized knowledge in AI engineering, software development, and cloud solutions.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                <div class="relative">
-                    <div class="absolute -left-5 -top-5 w-20 h-20 bg-primary-100 rounded-full opacity-70 z-0"></div>
-                    <div class="absolute -right-7 -bottom-7 w-28 h-28 bg-primary-200 rounded-full opacity-60 z-0"></div>
-                    <img src="/api/placeholder/500/550" alt="Technical Expertise" class="rounded-xl shadow-xl relative z-10 fade-in" />
-                </div>
-                <div>
-                    <div class="space-y-8">
-                        <div class="slide-in-right" style="--order: 1">
-                            <h3 class="text-xl font-bold mb-2 flex items-center">
-                                <span class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                AI Engineering
-                            </h3>
-                            <p class="text-secondary-600 pl-11">
-                                Expertise in OpenAI API integration, LangChain, prompt engineering, and fine-tuning custom AI models for specific business needs.
-                            </p>
-                        </div>
-
-                        <div class="slide-in-right" style="--order: 2">
-                            <h3 class="text-xl font-bold mb-2 flex items-center">
-                                <span class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                Full-Stack Development
-                            </h3>
-                            <p class="text-secondary-600 pl-11">
-                                Proficient in React, React Native, Node.js, and C#/.NET for building robust web and mobile applications with seamless AI integration.
-                            </p>
-                        </div>
-
-                        <div class="slide-in-right" style="--order: 3">
-                            <h3 class="text-xl font-bold mb-2 flex items-center">
-                                <span class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
-                                    </svg>
-                                </span>
-                                Data & Analytics
-                            </h3>
-                            <p class="text-secondary-600 pl-11">
-                                Experience in data processing, visualization, and analytics solutions to extract actionable insights from your business data.
-                            </p>
-                        </div>
-
-                        <div class="slide-in-right" style="--order: 4">
-                            <h3 class="text-xl font-bold mb-2 flex items-center">
-                                <span class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                AWS Cloud Infrastructure
-                            </h3>
-                            <p class="text-secondary-600 pl-11">
-                                Skilled in building scalable, secure cloud solutions using AWS services like Lambda, S3, EC2, and ECS for cost-effective AI deployments.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+          <h2 class="text-3xl md:text-4xl font-bold">Technical Expertise</h2>
+          <p class="mt-4 text-lg text-secondary-600 max-w-3xl mx-auto">
+            Specialized knowledge in AI engineering, software development, and
+            cloud solutions.
+          </p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div class="relative">
+            <div
+              class="absolute -left-5 -top-5 w-20 h-20 bg-primary-100 rounded-full opacity-70 z-0"
+            ></div>
+            <div
+              class="absolute -right-7 -bottom-7 w-28 h-28 bg-primary-200 rounded-full opacity-60 z-0"
+            ></div>
+            <img
+              src="img/7461489.jpg"
+              alt="Technical Expertise"
+              class="rounded-xl shadow-xl relative z-10 fade-in"
+            />
+          </div>
+          <div>
+            <div class="space-y-8">
+              <div class="slide-in-right" style="--order: 1">
+                <h3 class="text-xl font-bold mb-2 flex items-center">
+                  <span
+                    class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  AI Engineering
+                </h3>
+                <p class="text-secondary-600 pl-11">
+                  Expertise in OpenAI API integration, LangChain, prompt
+                  engineering, and fine-tuning custom AI models for specific
+                  business needs.
+                </p>
+              </div>
+
+              <div class="slide-in-right" style="--order: 2">
+                <h3 class="text-xl font-bold mb-2 flex items-center">
+                  <span
+                    class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  Full-Stack Development
+                </h3>
+                <p class="text-secondary-600 pl-11">
+                  Proficient in React, React Native, Node.js, and C#/.NET for
+                  building robust web and mobile applications with seamless AI
+                  integration.
+                </p>
+              </div>
+
+              <div class="slide-in-right" style="--order: 3">
+                <h3 class="text-xl font-bold mb-2 flex items-center">
+                  <span
+                    class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"
+                      />
+                    </svg>
+                  </span>
+                  Data & Analytics
+                </h3>
+                <p class="text-secondary-600 pl-11">
+                  Experience in data processing, visualization, and analytics
+                  solutions to extract actionable insights from your business
+                  data.
+                </p>
+              </div>
+
+              <div class="slide-in-right" style="--order: 4">
+                <h3 class="text-xl font-bold mb-2 flex items-center">
+                  <span
+                    class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  AWS Cloud Infrastructure
+                </h3>
+                <p class="text-secondary-600 pl-11">
+                  Skilled in building scalable, secure cloud solutions using AWS
+                  services like Lambda, S3, EC2, and ECS for cost-effective AI
+                  deployments.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Approach Section -->
     <section id="approach" class="py-20 bg-secondary-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold">My Approach</h2>
-                <p class="mt-4 text-lg text-secondary-600 max-w-3xl mx-auto">
-                    A transparent, collaborative process focused on delivering tailored solutions that drive real business results.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="bg-white rounded-xl shadow-md p-6 hover-scale">
-                    <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-primary-700 font-bold text-xl">1</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Discovery</h3>
-                    <p class="text-secondary-600">
-                        Understanding your business challenges, workflows, and objectives through in-depth consultation.
-                    </p>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-md p-6 hover-scale">
-                    <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-primary-700 font-bold text-xl">2</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Design</h3>
-                    <p class="text-secondary-600">
-                        Creating a tailored solution architecture that leverages AI and automation to address your specific needs.
-                    </p>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-md p-6 hover-scale">
-                    <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-primary-700 font-bold text-xl">3</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Development</h3>
-                    <p class="text-secondary-600">
-                        Building and integrating your solution with a focus on quality, security, and scalability.
-                    </p>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-md p-6 hover-scale">
-                    <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-primary-700 font-bold text-xl">4</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Deployment & Support</h3>
-                    <p class="text-secondary-600">
-                        Seamless implementation, training, and ongoing support to ensure long-term success.
-                    </p>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+          <h2 class="text-3xl md:text-4xl font-bold">My Approach</h2>
+          <p class="mt-4 text-lg text-secondary-600 max-w-3xl mx-auto">
+            A transparent, collaborative process focused on delivering tailored
+            solutions that drive real business results.
+          </p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="bg-white rounded-xl shadow-md p-6 hover-scale">
+            <div
+              class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mb-4"
+            >
+              <span class="text-primary-700 font-bold text-xl">1</span>
+            </div>
+            <h3 class="text-lg font-bold mb-2">Discovery</h3>
+            <p class="text-secondary-600">
+              Understanding your business challenges, workflows, and objectives
+              through in-depth consultation.
+            </p>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-md p-6 hover-scale">
+            <div
+              class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mb-4"
+            >
+              <span class="text-primary-700 font-bold text-xl">2</span>
+            </div>
+            <h3 class="text-lg font-bold mb-2">Design</h3>
+            <p class="text-secondary-600">
+              Creating a tailored solution architecture that leverages AI and
+              automation to address your specific needs.
+            </p>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-md p-6 hover-scale">
+            <div
+              class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mb-4"
+            >
+              <span class="text-primary-700 font-bold text-xl">3</span>
+            </div>
+            <h3 class="text-lg font-bold mb-2">Development</h3>
+            <p class="text-secondary-600">
+              Building and integrating your solution with a focus on quality,
+              security, and scalability.
+            </p>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-md p-6 hover-scale">
+            <div
+              class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mb-4"
+            >
+              <span class="text-primary-700 font-bold text-xl">4</span>
+            </div>
+            <h3 class="text-lg font-bold mb-2">Deployment & Support</h3>
+            <p class="text-secondary-600">
+              Seamless implementation, training, and ongoing support to ensure
+              long-term success.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Projects Showcase -->
     <section class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold">Featured Solutions</h2>
-                <p class="mt-4 text-lg text-secondary-600 max-w-3xl mx-auto">
-                    Recent projects that showcase the power of AI automation and custom development.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale">
-                    <div class="h-64 bg-secondary-200 relative">
-                        <img src="/api/placeholder/600/400" alt="Document Processing AI" class="w-full h-full object-cover" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                            <div class="p-6">
-                                <span class="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">AI Automation</span>
-                                <h3 class="text-xl font-bold text-white mt-2">Intelligent Document Processor</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-secondary-600 mb-4">
-                            AI-powered system that extracts, processes, and routes information from various document types, reducing manual data entry by 85%.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs">OpenAI</span>
-                            <span class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs">React</span>
-                            <span class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs">Node.js</span>
-                            <span class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs">AWS Lambda</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale">
-                    <div class="h-64 bg-secondary-200 relative">
-                        <img src="/api/placeholder/600/400" alt="Customer Service Chatbot" class="w-full h-full object-cover" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                            <div class="p-6">
-                                <span class="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">AI Agent</span>
-                                <h3 class="text-xl font-bold text-white mt-2">Knowledge Base Assistant</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-secondary-600 mb-4">
-                            Conversational AI agent that helps customers find information and resolve issues, available 24/7 across multiple channels.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs">LangChain</span>
-                            <span class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs">.NET</span>
-                            <span class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs">React</span>
-                            <span class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs">AWS</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+          <h2 class="text-3xl md:text-4xl font-bold">Featured Solutions</h2>
+          <p class="mt-4 text-lg text-secondary-600 max-w-3xl mx-auto">
+            Recent projects that showcase the power of AI automation and custom
+            development.
+          </p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div
+            class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale"
+          >
+            <div class="h-64 bg-secondary-200 relative">
+              <img
+                src="/api/placeholder/600/400"
+                alt="Document Processing AI"
+                class="w-full h-full object-cover"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end"
+              >
+                <div class="p-6">
+                  <span
+                    class="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium"
+                    >AI Automation</span
+                  >
+                  <h3 class="text-xl font-bold text-white mt-2">
+                    Intelligent Document Processor
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="p-6">
+              <p class="text-secondary-600 mb-4">
+                AI-powered system that extracts, processes, and routes
+                information from various document types, reducing manual data
+                entry by 85%.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                  >OpenAI</span
+                >
+                <span
+                  class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                  >React</span
+                >
+                <span
+                  class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                  >Node.js</span
+                >
+                <span
+                  class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                  >AWS Lambda</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale"
+          >
+            <div class="h-64 bg-secondary-200 relative">
+              <img
+                src="/api/placeholder/600/400"
+                alt="Customer Service Chatbot"
+                class="w-full h-full object-cover"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end"
+              >
+                <div class="p-6">
+                  <span
+                    class="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium"
+                    >AI Agent</span
+                  >
+                  <h3 class="text-xl font-bold text-white mt-2">
+                    Knowledge Base Assistant
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="p-6">
+              <p class="text-secondary-600 mb-4">
+                Conversational AI agent that helps customers find information
+                and resolve issues, available 24/7 across multiple channels.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                  >LangChain</span
+                >
+                <span
+                  class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                  >.NET</span
+                >
+                <span
+                  class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                  >React</span
+                >
+                <span
+                  class="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                  >AWS</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Testimonials -->
     <section class="py-20 bg-primary-900 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold">Client Success Stories</h2>
-                <p class="mt-4 text-lg text-primary-200 max-w-3xl mx-auto">
-                    Hear from organizations that have transformed their operations with SiliconBlaze solutions.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-primary-800 rounded-xl p-8 shadow-lg">
-                    <div class="flex items-center mb-6">
-                        <div class="text-primary-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-primary-100 mb-6 italic">
-                        "The AI document processing solution has completely transformed our workflow. What used to take hours now happens in minutes with greater accuracy."
-                    </p>
-                    <div>
-                        <p class="font-semibold">Sarah Johnson</p>
-                        <p class="text-primary-300 text-sm">Operations Director, TechCorp</p>
-                    </div>
-                </div>
-
-                <div class="bg-primary-800 rounded-xl p-8 shadow-lg">
-                    <div class="flex items-center mb-6">
-                        <div class="text-primary-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-primary-100 mb-6 italic">
-                        "Working with SiliconBlaze was a game-changer. They understood our needs from day one and delivered a solution that exceeded our expectations."
-                    </p>
-                    <div>
-                        <p class="font-semibold">Michael Chen</p>
-                        <p class="text-primary-300 text-sm">CTO, GrowthWave</p>
-                    </div>
-                </div>
-
-                <div class="bg-primary-800 rounded-xl p-8 shadow-lg">
-                    <div class="flex items-center mb-6">
-                        <div class="text-primary-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-primary-100 mb-6 italic">
-                        "Our customer service metrics improved dramatically after implementing the AI assistant. Response times decreased while satisfaction scores went up."
-                    </p>
-                    <div>
-                        <p class="font-semibold">Emma Rodriguez</p>
-                        <p class="text-primary-300 text-sm">Customer Experience Manager, RetailPlus</p>
-                    </div>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+          <h2 class="text-3xl md:text-4xl font-bold">Client Success Stories</h2>
+          <p class="mt-4 text-lg text-primary-200 max-w-3xl mx-auto">
+            Hear from organizations that have transformed their operations with
+            SiliconBlaze solutions.
+          </p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-primary-800 rounded-xl p-8 shadow-lg">
+            <div class="flex items-center mb-6">
+              <div class="text-primary-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <p class="text-primary-100 mb-6 italic">
+              "The AI document processing solution has completely transformed
+              our workflow. What used to take hours now happens in minutes with
+              greater accuracy."
+            </p>
+            <div>
+              <p class="font-semibold">Sarah Johnson</p>
+              <p class="text-primary-300 text-sm">
+                Operations Director, TechCorp
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-primary-800 rounded-xl p-8 shadow-lg">
+            <div class="flex items-center mb-6">
+              <div class="text-primary-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <p class="text-primary-100 mb-6 italic">
+              "Working with SiliconBlaze was a game-changer. They understood our
+              needs from day one and delivered a solution that exceeded our
+              expectations."
+            </p>
+            <div>
+              <p class="font-semibold">Michael Chen</p>
+              <p class="text-primary-300 text-sm">CTO, GrowthWave</p>
+            </div>
+          </div>
+
+          <div class="bg-primary-800 rounded-xl p-8 shadow-lg">
+            <div class="flex items-center mb-6">
+              <div class="text-primary-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <p class="text-primary-100 mb-6 italic">
+              "Our customer service metrics improved dramatically after
+              implementing the AI assistant. Response times decreased while
+              satisfaction scores went up."
+            </p>
+            <div>
+              <p class="font-semibold">Emma Rodriguez</p>
+              <p class="text-primary-300 text-sm">
+                Customer Experience Manager, RetailPlus
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="fade-in">
-                    <h2 class="text-3xl md:text-4xl font-bold">Let's Build Something Amazing Together</h2>
-                    <p class="mt-4 text-lg text-secondary-600">
-                        Ready to transform your business with AI automation and custom software? Schedule a free consultation to discuss your project.
-                    </p>
-                    
-                    <div class="mt-8 space-y-6">
-                        <div class="flex items-start">
-                            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-4 mt-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-700" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold">Email</h3>
-                                <p class="text-secondary-600">contact@siliconblaze.com</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-4 mt-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-700" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold">Phone</h3>
-                                <p class="text-secondary-600">+1 (555) 123-4567</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-4 mt-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-700" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold">Location</h3>
-                                <p class="text-secondary-600">Remote services available worldwide</p>
-                            </div>
-                        </div>
-                    </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div class="fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold">
+              Let's Build Something Amazing Together
+            </h2>
+            <p class="mt-4 text-lg text-secondary-600">
+              Ready to transform your business with AI automation and custom
+              software? Schedule a free consultation to discuss your project.
+            </p>
+
+            <div class="mt-8 space-y-6">
+              <div class="flex items-start">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-4 mt-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-primary-700"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+                    />
+                    <path
+                      d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
+                    />
+                  </svg>
                 </div>
-                
-                <div class="bg-white p-8 rounded-xl shadow-xl fade-in">
-                    <h3 class="text-2xl font-bold mb-6">Get a Free Consultation</h3>
-                    <form action="#" method="POST" class="space-y-4">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-secondary-700 mb-1">Name</label>
-                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" required>
-                        </div>
-                        
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-secondary-700 mb-1">Email</label>
-                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" required>
-                        </div>
-                        
-                        <div>
-                            <label for="service" class="block text-sm font-medium text-secondary-700 mb-1">Service Interest</label>
-                            <select id="service" name="service" class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
-                                <option value="">Select a service</option>
-                                <option value="ai-automation">AI Automation</option>
-                                <option value="chatbots">AI Agents & Chatbots</option>
-                                <option value="app-development">Mobile/Web Development</option>
-                                <option value="cloud">Cloud Solutions</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-secondary-700 mb-1">Project Details</label>
-                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-800 text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-300">
-                            Submit Request
-                        </button>
-                    </form>
+                <div>
+                  <h3 class="text-lg font-semibold">Email</h3>
+                  <p class="text-secondary-600">contact@siliconblaze.com</p>
                 </div>
+              </div>
+
+              <div class="flex items-start">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-4 mt-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-primary-700"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold">Phone</h3>
+                  <p class="text-secondary-600">+1 (555) 123-4567</p>
+                </div>
+              </div>
+
+              <div class="flex items-start">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-4 mt-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-primary-700"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold">Location</h3>
+                  <p class="text-secondary-600">
+                    Remote services available worldwide
+                  </p>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="bg-white p-8 rounded-xl shadow-xl fade-in">
+            <h3 class="text-2xl font-bold mb-6">Get a Free Consultation</h3>
+            <form action="#" method="POST" class="space-y-4">
+              <div>
+                <label
+                  for="name"
+                  class="block text-sm font-medium text-secondary-700 mb-1"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  for="email"
+                  class="block text-sm font-medium text-secondary-700 mb-1"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  for="service"
+                  class="block text-sm font-medium text-secondary-700 mb-1"
+                  >Service Interest</label
+                >
+                <select
+                  id="service"
+                  name="service"
+                  class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                >
+                  <option value="">Select a service</option>
+                  <option value="ai-automation">AI Automation</option>
+                  <option value="chatbots">AI Agents & Chatbots</option>
+                  <option value="app-development">
+                    Mobile/Web Development
+                  </option>
+                  <option value="cloud">Cloud Solutions</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  for="message"
+                  class="block text-sm font-medium text-secondary-700 mb-1"
+                  >Project Details</label
+                >
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full bg-gradient-to-r from-primary-600 to-primary-800 text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-300"
+              >
+                Submit Request
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="bg-secondary-900 text-white pt-12 pb-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8">
-                <div>
-                    <div class="text-2xl font-bold text-white mb-4">Silicon<span class="text-primary-400">Blaze</span></div>
-                    <p class="text-secondary-400 mb-4">
-                        Transforming businesses with AI automation and custom software development solutions.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-secondary-400 hover:text-primary-400 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-secondary-400 hover:text-primary-400 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-secondary-400 hover:text-primary-400 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Services</h3>
-                    <ul class="space-y-2 text-secondary-400">
-                        <li><a href="#services" class="hover:text-primary-400 transition-colors">AI Workflow Automation</a></li>
-                        <li><a href="#services" class="hover:text-primary-400 transition-colors">AI Agents & Chatbots</a></li>
-                        <li><a href="#services" class="hover:text-primary-400 transition-colors">Cloud Development</a></li>
-                        <li><a href="#services" class="hover:text-primary-400 transition-colors">Mobile App Development</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Technologies</h3>
-                    <ul class="space-y-2 text-secondary-400">
-                        <li><a href="#" class="hover:text-primary-400 transition-colors">OpenAI Integration</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition-colors">LangChain Solutions</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition-colors">React & React Native</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition-colors">C#/.NET Development</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
-                    <ul class="space-y-2 text-secondary-400">
-                        <li><a href="#" class="hover:text-primary-400 transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition-colors">Case Studies</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition-colors">AI Resources</a></li>
-                        <li><a href="#contact" class="hover:text-primary-400 transition-colors">Contact</a></li>
-                    </ul>
-                </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8">
+          <div>
+            <div class="text-2xl font-bold text-white mb-4">
+              Silicon<span class="text-primary-400">Blaze</span>
             </div>
-            
-            <div class="border-t border-secondary-800 pt-8 text-center text-secondary-500">
-                <p>&copy; 2025 SiliconBlaze. All rights reserved.</p>
+            <p class="text-secondary-400 mb-4">
+              Transforming businesses with AI automation and custom software
+              development solutions.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="text-secondary-400 hover:text-primary-400 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-secondary-400 hover:text-primary-400 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-secondary-400 hover:text-primary-400 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                  />
+                </svg>
+              </a>
             </div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Services</h3>
+            <ul class="space-y-2 text-secondary-400">
+              <li>
+                <a
+                  href="#services"
+                  class="hover:text-primary-400 transition-colors"
+                  >AI Workflow Automation</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  class="hover:text-primary-400 transition-colors"
+                  >AI Agents & Chatbots</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  class="hover:text-primary-400 transition-colors"
+                  >Cloud Development</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  class="hover:text-primary-400 transition-colors"
+                  >Mobile App Development</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Technologies</h3>
+            <ul class="space-y-2 text-secondary-400">
+              <li>
+                <a href="#" class="hover:text-primary-400 transition-colors"
+                  >OpenAI Integration</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-400 transition-colors"
+                  >LangChain Solutions</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-400 transition-colors"
+                  >React & React Native</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-400 transition-colors"
+                  >C#/.NET Development</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Resources</h3>
+            <ul class="space-y-2 text-secondary-400">
+              <li>
+                <a href="#" class="hover:text-primary-400 transition-colors"
+                  >Blog</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-400 transition-colors"
+                  >Case Studies</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-400 transition-colors"
+                  >AI Resources</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  class="hover:text-primary-400 transition-colors"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
+
+        <div
+          class="border-t border-secondary-800 pt-8 text-center text-secondary-500"
+        >
+          <p>&copy; 2025 SiliconBlaze. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
 
     <!-- Animation Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Animate staggered items on scroll
-            const staggerItems = document.querySelectorAll('.stagger-item');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.style.opacity = '1';
-                            entry.target.style.transform = 'translateY(0)';
-                        }, index * 100);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            staggerItems.forEach(item => {
-                observer.observe(item);
+      document.addEventListener('DOMContentLoaded', () => {
+        // Animate staggered items on scroll
+        const staggerItems = document.querySelectorAll('.stagger-item');
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry, index) => {
+              if (entry.isIntersecting) {
+                setTimeout(() => {
+                  entry.target.style.opacity = '1';
+                  entry.target.style.transform = 'translateY(0)';
+                }, index * 100);
+                observer.unobserve(entry.target);
+              }
             });
-            
-            // Smooth scroll for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
+          },
+          { threshold: 0.1 }
+        );
+
+        staggerItems.forEach((item) => {
+          observer.observe(item);
         });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: 'smooth',
+              });
+            }
+          });
+        });
+      });
     </script>
-</body>
+  </body>
 </html>
